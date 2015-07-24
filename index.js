@@ -6,12 +6,11 @@ var https = require('https');
 var DICE_REPLY_HOOK = process.env.DICE_REPLY_HOOK;
 
 function reply_by_hook(hook_url, channel, username, message){
-  //The url we want is `www.nodejitsu.com:1337/`
+
   var options = url.parse(hook_url);
   options.method = "POST";
 
   var req = https.request(options, null);
-  //This is the data we are posting, it needs to be a string or a buffer
   req.write(JSON.stringify({text: message, channel: channel, username: username}));
   req.end();
 }
