@@ -5,14 +5,14 @@ var https = require('https');
 
 var DICE_REPLY_HOOK = process.env.DICE_REPLY_HOOK;
 
-function reply_by_hook(hook_url, message){
+function reply_by_hook(hook_url, channel, message){
   //The url we want is `www.nodejitsu.com:1337/`
   var options = url.parse(hook_url);
   options.method = "POST";
 
   var req = https.request(options, null);
   //This is the data we are posting, it needs to be a string or a buffer
-  req.write(JSON.stringify({text: message}));
+  req.write(JSON.stringify({text: message, channel: channel}));
   req.end();
 }
 
@@ -42,8 +42,12 @@ app.get('/fudge_dice', function(req, res) {
 
   dice += " (" + sum + ")";
 
-  if ( req.query.public ) {
-    reply_by_hook(DICE_REPLY_HOOK, dice);
+  if ( req.query.text ) {
+    if ( req.query.text.charAt(0) !== "#" && req.query.text.charAt(0) !== "@" ){
+      res.send(400, "For public roll specify @user or #channel");
+    }
+
+    reply_by_hook(DICE_REPLY_HOOK, req.query.text, dice);
 
     res.send("");
   } else {
