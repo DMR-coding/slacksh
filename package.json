@@ -1,0 +1,25 @@
+{
+  "name": "slacksh",
+  "version": "0.1.0",
+  "description": "Some custom slash commands for slack",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nentuaby/slacksh.git"
+  },
+  "author": "Daniel F. Ross",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/Nentuaby/slacksh/issues"
+  },
+  "homepage": "https://github.com/Nentuaby/slacksh#readme",
+  "engines": {
+    "node": "^0.12.5"
+  },
+  "dependencies": {
+    "express": "^4.13.1"
+  }
+}
