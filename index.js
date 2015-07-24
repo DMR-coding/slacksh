@@ -1,5 +1,20 @@
 var express = require('express');
 var app = express();
+var url = require("url");
+var https = require('https');
+
+var DICE_REPLY_HOOK = process.env.DICE_REPLY_HOOK;
+
+function reply_by_hook(hook_url, message){
+  //The url we want is `www.nodejitsu.com:1337/`
+  var options = url.parse(hook_url);
+  options.method = "POST";
+
+  var req = https.request(options, null);
+  //This is the data we are posting, it needs to be a string or a buffer
+  req.write(JSON.stringify({text: message}));
+  req.end();
+}
 
 function roll() {
   var num = Math.floor(Math.random() * 3 - 1);
@@ -26,10 +41,20 @@ app.get('/fudge_dice', function(req, res) {
   }
 
   dice += " (" + sum + ")";
-  res.send(dice);
+
+  if ( req.query.public ) {
+    reply_by_hook(DICE_REPLY_HOOK, dice);
+
+    res.send("");
+  } else {
+    res.send(dice);
+  }
 });
 
-var server = app.listen(process.env.PORT || 8080, function () {
+var port = process.env.PORT || 8080;
+var server = app.listen(port, function () {
   var host = server.address().address;
   var port = server.address().port;
+
+  console.log("Started on port " + port)
 });
