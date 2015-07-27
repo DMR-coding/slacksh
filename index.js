@@ -50,7 +50,9 @@ app.get('/fudge_dice', function(req, res) {
 
     res.send("");
   } else {
-    res.send(dice);
+    reply_by_hook(DICE_REPLY_HOOK, req.query.channel_name, req.query.user_name, dice);
+
+    res.send("");
   }
 });
 
