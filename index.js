@@ -47,13 +47,13 @@ app.get('/fudge_dice', function(req, res) {
     }
 
     reply_by_hook(DICE_REPLY_HOOK, req.query.text, req.query.user_name, dice);
-
-    res.send("");
   } else {
-    reply_by_hook(DICE_REPLY_HOOK, req.query.channel_name, req.query.user_name, dice);
-
-    res.send("");
+    console.log(req.query);
+    //Yeah... You can't feed the outgoing channel_name into the incoming channel_name... :slack:!
+    reply_by_hook(DICE_REPLY_HOOK, "#" + req.query.channel_name, req.query.user_name, dice);
   }
+
+  res.send("");
 });
 
 var port = process.env.PORT || 8080;
