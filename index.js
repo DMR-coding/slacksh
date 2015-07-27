@@ -41,17 +41,9 @@ app.get('/fudge_dice', function(req, res) {
 
   dice += " (" + sum + ")";
 
-  if ( req.query.text ) {
-    if ( req.query.text.charAt(0) !== "#" && req.query.text.charAt(0) !== "@" ){
-      res.send(400, "For public roll specify @user or #channel");
-    }
-
-    reply_by_hook(DICE_REPLY_HOOK, req.query.text, req.query.user_name, dice);
-  } else {
-    console.log(req.query);
-    //Yeah... You can't feed the outgoing channel_name into the incoming channel_name... :slack:!
-    reply_by_hook(DICE_REPLY_HOOK, "#" + req.query.channel_name, req.query.user_name, dice);
-  }
+  console.log(req.query);
+    
+  reply_by_hook(DICE_REPLY_HOOK, req.query.channel_id, req.query.user_name, dice);
 
   res.send("");
 });
